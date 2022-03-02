@@ -24,24 +24,44 @@ const persons = [
 ]
 
 const typeDefs = gql`
+    type Address {
+        street: String!
+        city: String!
+    }
+
     type Person {
         name: String!
         phone: String
-        street: String!
-        city: String!
+        address: Address!
         id: ID!
     }
 
     type Query {
         personCount: Int!
         allPersons: [Person]!
+        findPerson(name: String!): Person
     }
 `
 
 const resolvers = {
     Query: {
         personCount: () => persons.length,
-        allPersons: () => persons
+        allPersons: () => persons,
+        findPerson: (root, args) => {
+            const {name} = args
+            return persons.find(person => person.name === name)
+        }
+    },
+    /* Person: {
+        addrees: (root) => `${root.street}, ${root.city}`,
+    } */
+    Person: {
+        address: (root) => {
+            return {
+                street: root.street,
+                city: root.city
+            }
+        }
     }
 }
 
