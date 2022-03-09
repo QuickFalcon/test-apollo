@@ -94,5 +94,5 @@ const server = new ApolloServer({
 
 server.listen()
     .then(({url}) => {
-        console.log(url)
+        console.log('Listening...', url)
     })
